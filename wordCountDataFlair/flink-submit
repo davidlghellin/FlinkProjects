@@ -1,0 +1,9 @@
+cd FLINK_HOME
+
+./bin/start-local.sh
+
+http://localhost:8081
+
+./bin/flink run /home/wizord/IdeaProjects/wordCountDataFlair/target/scala-2.11/wordCountDataFlair-assembly-0.1.jar
+
+./bin/stop-local.sh
