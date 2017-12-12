@@ -11,8 +11,12 @@ object Main extends App {
   // leemos el fichero y lo guardamos en el tipo de datos de Flink
   val lineas: DataSet[String] = env.readTextFile("/home/wizord/properties")
 
-  lineas.flatMap { line => line.split(" ").map(word => Word(word, 1)) }
+  val palabras  = lineas.flatMap { line => line.split(" ").map(word => Word(word, 1)) }
     .groupBy("word").sum("frecuency")
-    .print()
 
+  palabras.print()
+
+  palabras.writeAsCsv("/home/wizord/salidaFlink", "\n", " ")
+
+  env.execute("Executing program");
 }
