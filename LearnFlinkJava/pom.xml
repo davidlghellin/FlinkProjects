@@ -183,7 +183,8 @@ under the License.
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>es.david.movie.LearnFlinkJavaExplained</mainClass>
+                            <!-- <mainClass>es.david.movie.LearnFlinkJavaExplained</mainClass>-->
+                            <mainClass>es.david.optimize.LearnOptimize</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
