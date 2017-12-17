@@ -1,6 +1,5 @@
-package es.david.movie;
+package es.david.example;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Pelicula {

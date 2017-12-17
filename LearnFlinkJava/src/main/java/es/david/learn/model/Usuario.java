@@ -1,4 +1,4 @@
-package es.david.optimize.model;
+package es.david.learn.model;
 
 public class Usuario {
 

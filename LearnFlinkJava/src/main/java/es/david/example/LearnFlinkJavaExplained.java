@@ -1,4 +1,4 @@
-package es.david.movie;
+package es.david.example;
 
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;

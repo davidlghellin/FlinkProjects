@@ -1,13 +1,13 @@
-package es.david.optimize;
+package es.david.learn;
 
-import es.david.optimize.model.Pelicula;
-import es.david.optimize.model.Valoracion;
+import es.david.learn.model.Pelicula;
+import es.david.learn.model.Valoracion;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.api.java.operators.JoinOperator;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
 
@@ -25,6 +25,8 @@ public class LearnOptimize {
                         .ignoreFirstLine()
                         // inserta los string con el caracter especificado
                         .parseQuotedStrings('"')
+
+                        .fieldDelimiter("::")
                         // ignora las lineas no correctas
                         .ignoreInvalidLines()
                         // soecificamos los tipos
@@ -45,10 +47,11 @@ public class LearnOptimize {
 
         DataSource<Tuple4<Integer, String, Integer, Long>> linesRatings =
                 env.readCsvFile("/home/wizord/Git/FlinkProjects/LearnFlinkJava/src/main/resources/ratings/ratings.dat")
-                .ignoreFirstLine()
-                .parseQuotedStrings('"')
-                .ignoreInvalidLines()
-                .types(Integer.class, String.class, Integer.class, Long.class);
+                        .ignoreFirstLine()
+                        .fieldDelimiter("::")
+                        .parseQuotedStrings('"')
+                        .ignoreInvalidLines()
+                        .types(Integer.class, String.class, Integer.class, Long.class);
 
         DataSet<Valoracion> valoracion = linesRatings.map((new MapFunction<Tuple4<Integer, String, Integer, Long>, Valoracion>() {
             @Override
@@ -61,16 +64,24 @@ public class LearnOptimize {
             }
         }));
 
+
+        //  mostramos 10
+        linesPelis.first(10).print();
+        // ordenamos y mostramos 10
+        linesPelis.sortPartition(0, Order.DESCENDING).first(10).print();
+
+
         /////////////////////////////////////////////////
         // OPTIMIZACIONES
         /////////////////////////////////////////////////
         // como podemos ver en la pagina https://brewing.codes/2017/10/17/flink-optimize/
-        JoinOperator.DefaultJoin<Pelicula, Valoracion> join = pelis.join(valoracion)
-                // Use movie id as a key in both cases
+      /*  DataSet<Pelicula> join =
+                pelis.join(valoracion)
+
                 .where(new KeySelector<Pelicula, String>() {
                     @Override
-                    public String getKey(Pelicula m) throws Exception {
-                        return m.getId();
+                    public String getKey(Pelicula pelicula) throws Exception {
+                        return pelicula.getId();
                     }
                 })
                 .equalTo(new KeySelector<Valoracion, String>() {
@@ -79,8 +90,49 @@ public class LearnOptimize {
                         return r.getPeliId();
                     }
                 });
+
+
         System.out.println("Tenemos: " + join.count());
+        System.out.println("Generico1: " + join.getInput1().getType());
+        System.out.println("Generico2: " + join.getInput2().getType());
+
+*/
+        //   System.out.println(linesPelis.count());
+
+
+        System.out.println("---");
+        DataSet<Tuple3<Integer, String, String>> joinDocsRanks =
+                linesRatings.join(linesPelis)
+                        .where(1)
+                        .equalTo(0)
+                        .projectSecond(0, 1, 2);
+        joinDocsRanks.print();
+        System.out.println("---");
+        System.out.println(joinDocsRanks.count());
+        System.out.println(joinDocsRanks.collect().size());
+        System.out.println("---");
+        // Filter
+
+     /*   DataSet<Tuple1<String>> filterVisits = linesRatings
+                .filter(new FilterRating4())
+                .project(1);
+
+        filterVisits.print();
+
+        System.out.println(linesPelis.count());
+        System.out.println(linesRatings.count() + " linesRating");
+        System.out.println(filterVisits.count() + " cuanta");
+
+
+*/
 
     }
 
+    public static class FilterRating4 implements FilterFunction<Tuple4<Integer, String, Integer, Long>> {
+        @Override
+        public boolean filter(Tuple4<Integer, String, Integer, Long> value) throws Exception {
+            int valoracion = value.f2;
+            return valoracion == 4;
+        }
+    }
 }
