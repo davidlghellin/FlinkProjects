@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/wizord/Git/FlinkProjects/LearnFlinkJava
+mvn clean package
+cd /home/wizord/Documentos/Programas/flink-1.3.2
+./bin/flink run /home/wizord/Git/FlinkProjects/LearnFlinkJava/target/LearnFlinkJava-1.0-SNAPSHOT.jar
