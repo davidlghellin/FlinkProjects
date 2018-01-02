@@ -146,6 +146,14 @@ under the License.
                     <version>${log4j.version}</version>
                     <scope>provided</scope>
                 </dependency>
+
+                <!--
+                <dependency>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-table_2.10</artifactId>
+                    <version>1.3.2</version>
+                </dependency>
+                -->
             </dependencies>
 
             <build>
@@ -184,15 +192,16 @@ under the License.
                     <archive>
                         <manifest>
                             <!-- <mainClass>es.david.movie.LearnFlinkJavaExplained</mainClass>-->
-                             <mainClass>es.david.learn.LearnOptimize</mainClass>
-            <!-- <mainClass>es.david.transformations.LearnTransformations</mainClass>-->
-         </manifest>
-     </archive>
- </configuration>
-</plugin>
-<!-- We use the maven-shade plugin to create a fat jar that contains all dependencies
-except flink and its transitive dependencies. The resulting fat-jar can be executed
-on a cluster. Change the value of Program-Class if your program entry point changes. -->
+                            <!-- <mainClass>es.david.learn.LearnOptimize</mainClass>-->
+                            <!-- <mainClass>es.david.learn.transformations.LearnTransformations</mainClass>-->
+                            <mainClass>es.david.flink.PrinciapalAll</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- We use the maven-shade plugin to create a fat jar that contains all dependencies
+            except flink and its transitive dependencies. The resulting fat-jar can be executed
+            on a cluster. Change the value of Program-Class if your program entry point changes. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
