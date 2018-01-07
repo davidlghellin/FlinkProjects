@@ -8,4 +8,4 @@ http://localhost:8081
 
 ./bin/flink run /home/wizord/Git/FlinkProjects/wordCountDataFlair/target/scala-2.11/wordCountDataFlair-assembly-0.1.jar
 
-./bin/stop-local.sh
+./bin/stop-local.sh 

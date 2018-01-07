@@ -153,5 +153,12 @@ public class LearnTransformations {
 
         // MinBy
         // MaxBy
+        //....
+
+
+        // Distinct
+        // La transformacion distinct elimina duplicados
+        DataSet<Tuple3<String, String, String>> sinDuplicados = linesPelis.distinct();
+        DataSet<Tuple3<String, String, String>> sinDuplicados2 = linesPelis.distinct(1);
     }
 }
