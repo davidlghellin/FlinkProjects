@@ -4,6 +4,8 @@ cd FLINK_HOME
 
 http://localhost:8081
 
+#SBT
+
 ./bin/flink run /home/wizord/IdeaProjects/wordCountDataFlair/target/scala-2.11/wordCountDataFlair-assembly-0.1.jar
 
 ./bin/flink run /home/wizord/Git/FlinkProjects/wordCountDataFlair/target/scala-2.11/wordCountDataFlair-assembly-0.1.jar
